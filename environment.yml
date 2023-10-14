@@ -1,0 +1,7 @@
+name: brain-decoding
+channels:
+  - pytorch
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:

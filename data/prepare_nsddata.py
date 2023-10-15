@@ -4,7 +4,8 @@ import numpy as np
 import h5py
 import scipy.io as spio
 import nibabel as nib
-import pandas as pd
+from controlnet_aux.midas import MidasDetector 
+import torch 
 
 import argparse
 parser = argparse.ArgumentParser(description='Argument Parser')
@@ -90,12 +91,6 @@ for idx in range(num_trials):
 train_im_idx = list(sig_train.keys())
 test_im_idx = list(sig_test.keys())
 
-train_im_ndx_df = pd.DataFrame(train_im_idx)
-train_im_ndx_df.to_csv(r'stim_img_idx/subj{:02d}/train_im_idx.csv'.format(sub), index=False, header=False)
-
-test_im_ndx_df = pd.DataFrame(test_im_idx)
-test_im_ndx_df.to_csv(r'stim_img_idx/subj{:02d}/test_im_idx.csv'.format(sub), index=False, header=False)
-
 roi_dir = 'nsddata/ppdata/subj{:02d}/func1pt8mm/roi/'.format(sub)
 betas_dir = 'nsddata_betas/ppdata/subj{:02d}/func1pt8mm/betas_fithrf_GLMdenoise_RR/'.format(sub)
 
@@ -118,29 +113,49 @@ stim = f_stim['imgBrick'][:]
 
 print("Stimuli are loaded.")
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+midas_depth = MidasDetector.from_pretrained(
+  "valhalla/t2iadapter-aux-models", filename="dpt_large_384.pt", model_type="dpt_large"
+).to("cuda")
+
 num_train, num_test = len(train_im_idx), len(test_im_idx)
-vox_dim, im_dim, im_c = num_voxel, 425, 3
+vox_dim, im_dim, im_c, dpth_im_dm, dpth_im_c = num_voxel, 425, 3, 64, 3
+
+# Train Set
 fmri_array = np.zeros((num_train,vox_dim))
 stim_array = np.zeros((num_train,im_dim,im_dim,im_c))
+depth_stim_array = np.zeros((num_train,dpth_im_dm,dpth_im_dm,dpth_im_c)).astype(np.uint8)
 for i,idx in enumerate(train_im_idx):
     stim_array[i] = stim[idx]
+    depth_img_arr = midas_depth(
+        stim[idx].astype(np.uint8), detect_resolution=im_dim, image_resolution=dpth_im_dm
+    )
+    depth_stim_array[i] = depth_img_arr
     fmri_array[i] = fmri[sorted(sig_train[idx])].mean(0)
     print(i)
 
 np.save('processed_data/subj{:02d}/nsd_train_fmriavg_nsdgeneral_sub{}.npy'.format(sub,sub),fmri_array )
 np.save('processed_data/subj{:02d}/nsd_train_stim_sub{}.npy'.format(sub,sub),stim_array )
+np.save('processed_data/subj{:02d}/nsd_train_depth_stim_sub{}.npy'.format(sub,sub),depth_stim_array )
 
 print("Training data is saved.")
 
+# Test Set
 fmri_array = np.zeros((num_test,vox_dim))
 stim_array = np.zeros((num_test,im_dim,im_dim,im_c))
+depth_stim_array = np.zeros((num_test,dpth_im_dm,dpth_im_dm,dpth_im_c)).astype(np.uint8)
 for i,idx in enumerate(test_im_idx):
     stim_array[i] = stim[idx]
+    depth_img_arr = midas_depth(
+        stim[idx].astype(np.uint8), detect_resolution=im_dim, image_resolution=dpth_im_dm
+    )
+    depth_stim_array[i] = depth_img_arr
     fmri_array[i] = fmri[sorted(sig_test[idx])].mean(0)
     print(i)
 
 np.save('processed_data/subj{:02d}/nsd_test_fmriavg_nsdgeneral_sub{}.npy'.format(sub,sub),fmri_array )
 np.save('processed_data/subj{:02d}/nsd_test_stim_sub{}.npy'.format(sub,sub),stim_array )
+np.save('processed_data/subj{:02d}/nsd_test_depth_stim_sub{}.npy'.format(sub,sub),depth_stim_array )
 
 print("Test data is saved.")
 

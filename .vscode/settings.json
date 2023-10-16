@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./vdvae",
+        "./versatile_diffusion"
+    ]
+}

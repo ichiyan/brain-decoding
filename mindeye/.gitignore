@@ -1,0 +1,17 @@
+# **/__pycache__/
+# **/*.ipynb_checkpoints
+# **/checkpoints
+# **/.DS_Store
+# **/wandb
+# **/train_logs
+# **/slurm-*.out
+
+# *.pth
+# src/evals
+# src/evals-*
+
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+

@@ -116,7 +116,7 @@ print("Stimuli are loaded.")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 midas_depth = MidasDetector.from_pretrained(
   "valhalla/t2iadapter-aux-models", filename="dpt_large_384.pt", model_type="dpt_large"
-).to("cuda")
+).to(device)
 
 num_train, num_test = len(train_im_idx), len(test_im_idx)
 vox_dim, im_dim, im_c, dpth_im_dm, dpth_im_c = num_voxel, 425, 3, 64, 3

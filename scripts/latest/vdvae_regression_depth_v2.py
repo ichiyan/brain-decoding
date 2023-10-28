@@ -44,7 +44,7 @@ num_voxels, num_train, num_test = train_fmri.shape[1], len(train_fmri), len(test
 print('Training latents Feature Regression')
 
 # cv = RepeatedKFold(n_splits=10, n_repeats=3, random_state=1)
-# reg = skl.RidgeCV(alphas=np.arange(10000, 100000, 10000), cv=cv, scoring='neg_mean_absolute_error', fit_intercept=True)
+# reg = skl.RidgeCV(alphas=np.arange(10000, 100000, 10000), cv=cv, scoring='neg_mean_absolute_error', fit_intercept=True, store_cv_values=True)
 reg = skl.Ridge(alpha=100000, max_iter=10000, fit_intercept=True)
 reg.fit(train_fmri, train_latents)
 pred_test_latent = reg.predict(test_fmri)

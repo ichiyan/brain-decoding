@@ -45,14 +45,14 @@ num_voxels, num_train, num_test = train_fmri.shape[1], len(train_fmri), len(test
 ## latents Features Regression
 print('Training latents Feature Regression')
 
-reg = skl.Ridge(alpha=100000, max_iter=10000, fit_intercept=True)
+reg = skl.Ridge(alpha=40000, max_iter=10000, fit_intercept=True)
 reg.fit(train_fmri, train_latents)
 pred_test_latent = reg.predict(test_fmri)
 std_norm_test_latent = (pred_test_latent - np.mean(pred_test_latent,axis=0)) / np.std(pred_test_latent,axis=0)
 pred_latents = std_norm_test_latent * np.std(train_latents,axis=0) + np.mean(train_latents,axis=0)
 print(reg.score(test_fmri,test_latents))
 
-np.save('data/predicted_features/subj{:02d}/nsd_ldvae_nsdgeneral_pred_sub{}_alpha100k.npy'.format(sub,sub),pred_latents)
+np.save('data/predicted_features/subj{:02d}/nsd_lvae_nsdgeneral_pred_sub{}_alpha40k.npy'.format(sub,sub),pred_latents)
 
 
 datadict = {
@@ -61,5 +61,5 @@ datadict = {
 
 }
 
-with open('data/regression_weights/subj{:02d}/lvae_regression_weights.pkl'.format(sub),"wb") as f:
+with open('data/regression_weights/subj{:02d}/lvae_regression_weights_alpha40k.pkl'.format(sub),"wb") as f:
   pickle.dump(datadict,f)

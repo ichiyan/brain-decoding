@@ -1,4 +1,4 @@
-#from mpi4py import MPI
+from mpi4py import MPI
 import os
 import json
 import tempfile

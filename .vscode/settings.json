@@ -2,6 +2,7 @@
     "python.analysis.extraPaths": [
         "./vdvae",
         "./versatile_diffusion",
-        "./T2I-Adapter"
+        "./T2I-Adapter",
+        "./latent_vae",
     ]
 }

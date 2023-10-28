@@ -96,25 +96,22 @@ for i,x in enumerate(testloader):
             batch_latent.append(stats[i]['z'].cpu().numpy().reshape(len(data_input),-1))
             print(batch_latent[-1].shape)
         test_latents.append(np.hstack(batch_latent))
-        print(test_latents[-1].shape)
-        print(test_latents.shape)
-        break
 
-# test_latents = np.concatenate(test_latents)  
+test_latents = np.concatenate(test_latents)  
 
-# train_latents = []
-# for i,x in enumerate(trainloader):
-#   data_input, target = preprocess_fn(x)
-#   with torch.no_grad():
-#         print(i*batch_size)
-#         activations = ema_vae.encoder.forward(data_input)
-#         px_z, stats = ema_vae.decoder.forward(activations, get_latents=True)
-#         #recons = ema_vae.decoder.out_net.sample(px_z)
-#         batch_latent = []
-#         for i in range(num_latents):
-#             batch_latent.append(stats[i]['z'].cpu().numpy().reshape(len(data_input),-1))
-#         train_latents.append(np.hstack(batch_latent))
-# train_latents = np.concatenate(train_latents)      
+train_latents = []
+for i,x in enumerate(trainloader):
+  data_input, target = preprocess_fn(x)
+  with torch.no_grad():
+        print(i*batch_size)
+        activations = ema_vae.encoder.forward(data_input)
+        px_z, stats = ema_vae.decoder.forward(activations, get_latents=True)
+        #recons = ema_vae.decoder.out_net.sample(px_z)
+        batch_latent = []
+        for i in range(num_latents):
+            batch_latent.append(stats[i]['z'].cpu().numpy().reshape(len(data_input),-1))
+        train_latents.append(np.hstack(batch_latent))
+train_latents = np.concatenate(train_latents)      
 
-# np.savez("data/extracted_features/subj{:02d}/nsd_vdvae_features_{}l.npz".format(sub,num_latents),train_latents=train_latents,test_latents=test_latents)
+np.savez("data/extracted_features/subj{:02d}/nsd_vdvae_features_{}l.npz".format(sub,num_latents),train_latents=train_latents,test_latents=test_latents)
 

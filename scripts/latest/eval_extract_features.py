@@ -28,8 +28,10 @@ sub=int(args.sub)
 assert sub in [0,1,2,5,7]
 
 
-images_dir = 'data/nsddata_stimuli/test_images'
-feats_dir = 'data/eval_features/test_images'
+# images_dir = 'data/nsddata_stimuli/test_images'
+# feats_dir = 'data/eval_features/test_images'
+images_dir = '/content/brain-decoding/data/test'
+feats_dir = '/content/brain-decoding/data/eval_features'
 
 if sub in [1,2,5,7]:
     feats_dir = 'data/eval_features/subj{:02d}'.format(sub)
@@ -79,7 +81,7 @@ net_list = [
     ('swav','avgpool')
     ]
 
-device = 1
+device = 0
 net = None
 batchsize=64
 

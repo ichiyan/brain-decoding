@@ -24,11 +24,16 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model_id = "CompVis/stable-diffusion-v1-4"
 
+# pipe = StableDiffusionPipeline.from_pretrained(
+#     model_id, torch_dtype=torch.float16, variant="fp16"
+# ).to(device)
+
 pipe = StableDiffusionPipeline.from_pretrained(
-    model_id, torch_dtype=torch.float16, variant="fp16"
+    model_id
 ).to(device)
 
-# pipe.enable_model_cpu_offload()
+
+pipe.enable_model_cpu_offload()
 
 compel = Compel(
     tokenizer=pipe.tokenizer, 
@@ -42,7 +47,7 @@ with torch.no_grad():
         prompt_embeds = compel(caps)
         test_clip[i] = prompt_embeds.to('cpu').numpy().mean(0)
     
-    np.save('data/extracted_features/subj{:02d}/nsd_compel_cliptext_test.npy'.format(sub),test_clip)
+    np.save('data/extracted_features/subj{:02d}/nsd_compel_cliptext_test_f64.npy'.format(sub),test_clip)
         
     for i,annots in enumerate(train_caps):
         caps = list(annots[annots!=''])
@@ -50,6 +55,6 @@ with torch.no_grad():
         prompt_embeds = compel(caps)
         train_clip[i] = prompt_embeds.to('cpu').numpy().mean(0)
 
-    np.save('data/extracted_features/subj{:02d}/nsd_compel_cliptext_train.npy'.format(sub),train_clip)
+    np.save('data/extracted_features/subj{:02d}/nsd_compel_cliptext_train_f64.npy'.format(sub),train_clip)
 
 

@@ -4,5 +4,6 @@
         "./versatile_diffusion",
         "./T2I-Adapter",
         "./latent_vae",
+        "./mindeye",
     ]
 }

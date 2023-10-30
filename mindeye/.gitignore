@@ -1,10 +1,10 @@
 **/__pycache__/
 **/*.ipynb_checkpoints
-**/checkpoints
+# **/checkpoints
 **/data
 **/.DS_Store
 **/wandb
-**/train_logs
+# **/train_logs
 **/slurm-*.out
 
 *.pth

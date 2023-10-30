@@ -81,7 +81,7 @@ ssim_list = []
 pixcorr_list = []
 for i in range(982):
     gen_image = Image.open('/content/drive/MyDrive/brain_decoding/data/reconstructed/53l/stim_53l/{}.png'.format(sub,i)).resize((425,425))
-    gt_image = Image.open('/content/brain-decoding/data/test/{}.png'.format(i))
+    gt_image = Image.open('/content/brain-decoding/data/nsddata_stimuli/stimuli/{}.png'.format(i))
     gen_image = np.array(gen_image)/255.0
     gt_image = np.array(gt_image)/255.0
     pixcorr_res = np.corrcoef(gt_image.reshape(1,-1), gen_image.reshape(1,-1))[0,1]

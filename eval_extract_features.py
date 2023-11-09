@@ -30,7 +30,7 @@ assert sub in [0,1,2,5,7]
 
 # images_dir = 'data/nsddata_stimuli/test_images'
 # feats_dir = 'data/eval_features/test_images'
-images_dir = '/content/drive/MyDrive/brain_decoding/data/ground_truth_stim'
+images_dir = '/content/drive/MyDrive/brain_decoding/data/ground_truth_stim/test'
 feats_dir = '/content/brain-decoding/data/eval_features'
 
 if sub in [1,2,5,7]:
@@ -54,7 +54,7 @@ class batch_generator_external_images(Dataset):
         self.num_test = 982
         
     def __getitem__(self,idx):
-        img = Image.open('{}/{}{}.png'.format(self.data_path,self.prefix,idx))
+        img = Image.open('{}/{}{}_best.png'.format(self.data_path,self.prefix,idx))
         img = T.functional.resize(img,(224,224))
         img = T.functional.to_tensor(img).float()
         img = self.normalize(img)

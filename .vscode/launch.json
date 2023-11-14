@@ -12,6 +12,8 @@
             "console": "integratedTerminal",
             "justMyCode": true, 
             "args": [
+                "-sub", "1",
+                // "-bs", "2"
             ]
         }
     ]

@@ -77,7 +77,7 @@ image_path = 'data/processed_data/subj{:02d}/nsd_test_stim_sub{}.npy'.format(sub
 test_images = batch_generator_external_images(data_path = image_path)
 testloader = DataLoader(test_images,batch_size,shuffle=False)
 
-num_latents = 39
+num_latents = 31
 
 test_latents = []
 for i,x in enumerate(testloader):

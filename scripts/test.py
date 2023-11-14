@@ -1,1 +1,0 @@
-from compel import Compel, ReturnedEmbeddingsType

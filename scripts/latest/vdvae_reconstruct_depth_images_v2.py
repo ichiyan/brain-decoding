@@ -77,7 +77,7 @@ image_path = 'data/processed_data/subj{:02d}/nsd_test_depth_stim_sub{}.npy'.form
 test_images = batch_generator_external_images(data_path = image_path)
 testloader = DataLoader(test_images,batch_size,shuffle=False)
 
-num_layers = 41
+num_layers = 47
 
 test_latents = []
 for i,x in enumerate(testloader):
@@ -101,7 +101,7 @@ ref_latent = stats
 
 # Transfor latents from flattened representation to hierarchical
 def latent_transformation(latents, ref):
-  layer_dims = np.array([2**4,2**4,2**8,2**8,2**8,2**8,2**10,2**10,2**10,2**10,2**10,2**10,2**10,2**10,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14]) 
+  layer_dims = np.array([2**4,2**4,2**8,2**8,2**8,2**8,2**10,2**10,2**10,2**10,2**10,2**10,2**10,2**10,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**12,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14,2**14]) 
   transformed_latents = []
   for i in range(num_layers):
     t_lat = latents[:,layer_dims[:i].sum():layer_dims[:i+1].sum()]

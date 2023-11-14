@@ -23,8 +23,8 @@ test_fmri = np.load(test_path)
 
 ## Preprocessing fMRI
 
-train_fmri = train_fmri/300
-test_fmri = test_fmri/300
+# train_fmri = train_fmri/300
+# test_fmri = test_fmri/300
 
 
 norm_mean_train = np.mean(train_fmri, axis=0)

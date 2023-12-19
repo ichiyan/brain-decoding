@@ -547,8 +547,12 @@ class BrainDiffusionPrior(DiffusionPrior):
         
         # undo the scaling so we can directly use it for real mse loss and reconstruction
         return loss, pred
-    
-from diffusers.models.vae import Decoder
+
+# diffusers==0.13.0
+# from diffusers.models.vae import Decoder
+
+# diffusers==0.24.0
+from diffusers.models.autoencoders.vae import Decoder 
 class Voxel2StableDiffusionModel(torch.nn.Module):
     def __init__(self, in_dim=15724, h=4096, n_blocks=4, use_cont=False, ups_mode='4x'):
         super().__init__()
